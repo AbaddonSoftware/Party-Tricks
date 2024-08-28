@@ -1,4 +1,6 @@
 from dateutil.parser import parse
+
+
 class Dodgson:
     """An implementation of the Charles Dodgson aka Lewis Caroll Day from Date Trick"""
 
@@ -35,11 +37,20 @@ class Dodgson:
         }
         return month_values[month]
 
-    @staticmethod
     def get_daydate_value(self, daydate, year):
-        return daydate if self.is_leap_year(year) else (daydate - 1)
+        return daydate if not self.is_leap_year(year) else (daydate - 1)
 
-    def get_weekday_value(self, datetime):
+    def get_weekday_value(self, dateStr):
+        weekday_values = {
+            0: "Sunday",
+            1: "Monday",
+            2: "Tuesday",
+            3: "Wednesday",
+            4: "Thursday",
+            5: "Friday",
+            6: "Saturday",
+        }
+        datetime = parse(dateStr)
         year, month, day = (
             datetime.year,
             datetime.month,
@@ -49,7 +60,13 @@ class Dodgson:
         century_value = self.get_century_value(year)
         year_value = self.get_year_value(year)
         month_value = self.get_month_value(month)
-        weekday_value = (
-            daydate + century_value + year_value + month_value
-        ) % 7
-        return weekday_value
+        weekday_value = (daydate + century_value + year_value + month_value) % 7
+        return weekday_values[weekday_value]
+
+
+if __name__ == "__main__":
+    test_dates = ["September 05 2002", "February 23 1992", "09-15-1995", "1995-01-01"]
+    dodgson = Dodgson()
+    for date in test_dates:
+        weekday = dodgson.get_weekday_value(date)
+        print(weekday)
