@@ -1,3 +1,4 @@
+import datetime
 from dateutil.parser import parse
 
 
@@ -70,3 +71,4 @@ if __name__ == "__main__":
     for date in test_dates:
         weekday = dodgson.get_weekday_value(date)
         print(weekday)
+        print(parse(date).strftime("%A"))
